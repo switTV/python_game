@@ -23,3 +23,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    # Changing BG color
+    winScreen.fill((22, 29, 54))
+
+    # Uploading info
+    pygame.display.update()
