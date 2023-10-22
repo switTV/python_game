@@ -11,7 +11,11 @@ pygame.init()
 # Create the screen
 winScreen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-# title
+# title & logo
+icon = pygame.image.load("./textures/ufo.png")
+
+pygame.display.set_caption("Space invaders")
+pygame.display.set_icon(icon)
 
 # Principal loop
 running= True
