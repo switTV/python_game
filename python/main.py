@@ -1,12 +1,8 @@
 import pygame
-import random
-import sys
-
-# Globals variables
-HEIGHT = 600
-WIDTH = 800
-player_velocity = 0.5
-enemyX_velocity = 0.6
+from player import Player
+from enemy import Enemy
+from bullet import Bullet
+from config import *
 
 # init
 pygame.init()
@@ -21,31 +17,10 @@ pygame.display.set_caption("Space invaders")
 pygame.display.set_icon(icon)
 
 
-# Player
-class Player:
-    def __init__(self):
-        self.playerImg = pygame.image.load("./textures/player.png")
-        self.playerX = 370
-        self.playerY = 500
-
-    def draw(self):
-        winScreen.blit(self.playerImg, (self.playerX, self.playerY))
-
-# Enemy
-
-class Enemy:
-    def __init__(self):
-        self.enemyImg = pygame.image.load("./textures/enemy.png")
-        self.enemyX = random.randint(0, 736)
-        self.enemyY = 80
-    
-    def draw(self):
-        winScreen.blit(self.enemyImg, (self.enemyX, self.enemyY))
-    
-
 # inicializando clases
-player = Player()
-enemy = Enemy()
+player = Player(winScreen, player_velocity)
+enemy = Enemy(winScreen, enemyX_velocity)
+bullet = Bullet(winScreen)
 
 # Principal loop
 running = True
@@ -61,6 +36,13 @@ while running:
 
     elif key[pygame.K_d] or key[pygame.K_RIGHT]:
         player.playerX += player_velocity
+    
+    if key[pygame.K_SPACE]:
+        if bullet.bullet_state == True:
+            pass
+        else:
+            bullet.bulletX = player.playerX
+        bullet.bullet_state = True
     
 
 
@@ -81,8 +63,17 @@ while running:
         enemyX_velocity = -abs(enemyX_velocity)
         enemy.enemyY += 10
 
+    # Bullet Movement
+    if bullet.bullet_state is True:
+        bullet.fire_bullet(bullet.bulletX, bullet.bulletY)
+        bullet.bulletY -= bullet_velocity
+
+        if bullet.bulletY <= -70:
+            bullet.bullet_state = False
+            bullet.bulletY = 500
+
     
-    # Movemos el personaje en la dirección actual
+    # Movemos el enemigo en la dirección actual
     enemy.enemyX += enemyX_velocity
     
     for event in pygame.event.get():
