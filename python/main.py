@@ -3,6 +3,7 @@ from player import Player
 from enemy import Enemy
 from bullet import Bullet
 from config import *
+import random
 
 # init
 pygame.init()
@@ -72,6 +73,15 @@ while running:
             bullet.bullet_state = False
             bullet.bulletY = 500
 
+    # Collision
+    collision = bullet.isCollition(enemy.enemyX, enemy.enemyY, bullet.bulletX, bullet.bulletY)
+    if collision:
+        bullet.bulletY = 480
+        bullet.bullet_state = False
+        SCORE += 1
+        print(SCORE)
+        enemy.enemyX = random.randint(0, 736)
+        enemy.enemyY = 80
     
     # Movemos el enemigo en la dirección actual
     enemy.enemyX += enemyX_velocity
